@@ -2,7 +2,7 @@ package com.example.edu_com_plati_za_edu.entity;
 
 import java.sql.ResultSet;
 
-public class GroupStud implements MyEntity{
+public class GroupStud extends MyEntity{
     private int id;
     private int groupNumber;
     private int courseId;
@@ -39,21 +39,13 @@ public class GroupStud implements MyEntity{
         this.courseId = courseId;
     }
 
-    public String getInsertQuery(){
-        return "Insert into teacher(group_number, course_id) VALUES("+ groupNumber +", " + courseId + ")";
-    }
 
 
-    public static GroupStud parseFromQuery(ResultSet rs) throws Exception {
-        return new GroupStud(rs.getInt("id"),
-                rs.getInt("group_number"),
-                rs.getInt("course_id"));
-    }
 
     @Override
-    public String getUpdateQuery() {
-        return "UPDATE group_stud group_number = " + groupNumber +
-                ", course_id = " + courseId +
-                " WHERE id = " + id;
+    public String toString() {
+        return "id = " + id +
+                ", groupNumber = " + groupNumber +
+                ", courseId = " + courseId;
     }
 }

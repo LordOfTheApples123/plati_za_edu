@@ -2,7 +2,10 @@ package com.example.edu_com_plati_za_edu;
 
 import com.example.edu_com_plati_za_edu.entity.*;
 
+import javax.xml.crypto.dsig.dom.DOMValidateContext;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,37 +17,36 @@ public class CLI {
     private static final String byIdText = "Enter id: \n";
     private static final String ChooseUpdate = "Choose attr to update (0-4) \n";
     private static final String tryAgain = "invalid args. Try again \n";
+    DBRepo dbRepo = new DBRepo();
+    private static final String exceptionText = "Something went wrong. Try again";
 
-    public static void start() {
+
+    public void start() {
         Scanner in = new Scanner(System.in);
         try {
-            Connection con = ConnectionMgr.getNewConnection();
             while (true) {
                 print(chooseTable);
                 int chosenTable = in.nextInt();
-                if (chosenTable < 0 && chosenTable > 5) {
+                if (chosenTable < 0 || chosenTable > 5) {
                     print(tryAgain);
                     continue;
                 }
                 print(chooseAction);
                 int input = in.nextInt();
 
-
                 switch (input) {
                     case 1:
                         create(in, chosenTable);
                         break;
                     case 2:
-                        read(con, in, chosenTable);
+                        read(in, chosenTable);
                         break;
                     case 3:
-                        update(con, in, chosenTable);
                         break;
                     case 4:
-                        delete(con, in, chosenTable);
+                        delete(in, chosenTable);
                         break;
                     default:
-                        con.close();
                         System.exit(0);
 
                 }
@@ -55,24 +57,29 @@ public class CLI {
         }
     }
 
-    private static void delete(Connection con, Scanner in, int chosenTable) {
+    private void delete(Scanner in, int chosenTable) {
+        print(byIdText);
         int input = in.nextInt();
-        switch (chosenTable) {
-            case 1:
-                DBRepo.deleteByIdFrom(input, "student");
-                break;
-            case 2:
-                DBRepo.deleteByIdFrom(input, "teacher");
-                break;
-            case 3:
-                DBRepo.deleteByIdFrom(input, "course");
-                break;
-            case 4:
-                DBRepo.deleteByIdFrom(input, "group_stud");
-                break;
-            case 5:
-                DBRepo.deleteByIdFrom(input, "class_stud");
-                break;
+        try {
+            switch (chosenTable) {
+                case 1:
+                    dbRepo.deleteByIdFrom(input, Student.class);
+                    break;
+                case 2:
+                    dbRepo.deleteByIdFrom(input, Teacher.class);
+                    break;
+                case 3:
+                    dbRepo.deleteByIdFrom(input, Course.class);
+                    break;
+                case 4:
+                    dbRepo.deleteByIdFrom(input, GroupStud.class);
+                    break;
+                case 5:
+                    dbRepo.deleteByIdFrom(input, ClassStud.class);
+                    break;
+            }
+        } catch (SQLException e){
+            System.out.println(exceptionText);
         }
     }
 
@@ -80,113 +87,129 @@ public class CLI {
 
     }
 
-    private static void read(Connection con, Scanner in, int chosenTable) {
+    private void read(Scanner in, int chosenTable) {
         print(chooseRead);
         int input = in.nextInt();
-        switch (input) {
-            case 1:
-                print(byIdText);
-                switch (chosenTable) {
-                    case 1:
-                        Student student = DBRepo.findStudentById(input);
-                        if (student != null) {
+        try {
+            switch (input) {
+                case 1:
+                    print(byIdText);
+                    input = in.nextInt();
+                    switch (chosenTable) {
+                        case 1:
+                            Student student = (Student) dbRepo.findById(input, Student.class);
                             print(student.toString());
-                        } else print("not found");
-                        break;
-                    case 2:
-                        Teacher teacher = DBRepo.findTeacherById(input);
-                        if (teacher != null) {
+                            break;
+                        case 2:
+                            Teacher teacher = (Teacher) dbRepo.findById(input, Teacher.class);
                             print(teacher.toString());
-                        } else print("not found");
-                        break;
-                    case 3:
-                        Course course = DBRepo.findCourseById(input);
-                        if (course != null) {
-                            print(course.toString());
-                        } else print("not found");
-                        break;
-                    case 4:
-                        GroupStud groupStud = DBRepo.findGroupById(input);
-                        if (groupStud != null) {
-                            print(groupStud.toString());
-                        } else print("not found");
-                        break;
-                    case 5:
-                        ClassStud classStud = DBRepo.findClassById(input);
-                        if (classStud != null) {
-                            print(classStud.toString());
-                        } else print("not found");
-                        break;
-                    default:
-                        print(tryAgain);
-                }
-                break;
-            case 2:
-                switch (chosenTable) {
-                    case 1:
-                        List<Student> students = DBRepo.getStudents();
-                        for (Student stud : students) {
-                            print(stud.toString());
-                        }
-                        break;
-                    case 2:
-                        List<Teacher> teachers = DBRepo.getTeachers();
-                        for (Teacher teacher : teachers) {
-                            print(teacher.toString());
-                        }
-                        break;
-                    case 3:
-                        List<Course> course = DBRepo.getCourses();
-                        for (Course course1 : course) {
-                            print(course1.toString());
-                        }
-                        break;
-                    case 4:
-                        List<GroupStud> groups = DBRepo.getGroups();
-                        for (GroupStud group : groups) {
-                            print(group.toString());
-                        }
-                        break;
-                    case 5:
-                        List<ClassStud> classStuds = DBRepo.getClasses();
-                        for (ClassStud classStud : classStuds) {
-                            print(classStud.toString());
-                        }
-                        break;
-                    default:
-                        print(tryAgain);
-                }
-                break;
+                            break;
+                        case 3:
+                            Course course = (Course) dbRepo.findById(input, Course.class);
+                                print(course.toString());
+                            break;
+                        case 4:
+                            GroupStud groupStud = (GroupStud) dbRepo.findById(input, GroupStud.class);
+                                print(groupStud.toString());
+                            break;
+                        case 5:
+                            ClassStud classStud = (ClassStud) dbRepo.findById(input, ClassStud.class);
+                                print(classStud.toString());
+                            break;
+                        default:
+                            print(tryAgain);
+                    }
+                    break;
+                case 2:
+                    switch (chosenTable) {
+                        case 1:
+                            List<MyEntity> students = dbRepo.getAll(Student.class);
+                            for (MyEntity entity : students) {
+                                Student student = (Student) entity;
+                                print(student.toString());
+                            }
+                            break;
+                        case 2:
+                            List<MyEntity> teachers = dbRepo.getAll(Teacher.class);
+                            for (MyEntity entity : teachers) {
+                                Teacher teacher = (Teacher) entity;
+                                print(teacher.toString());
+                            }
+                            break;
+                        case 3:
+                            List<MyEntity> courses = dbRepo.getAll(Course.class);
+                            for (MyEntity entity : courses) {
+                                Course course = (Course) entity;
+                                print(course.toString());
+                            }
+                            break;
+                        case 4:
+                            List<MyEntity> groups = dbRepo.getAll(GroupStud.class);
+                            for (MyEntity entity : groups) {
+                                GroupStud group = (GroupStud) entity;
+                                print(group.toString());
+                            }
+                            break;
+                        case 5:
+                            List<MyEntity> classStuds = dbRepo.getAll(ClassStud.class);
+                            for (MyEntity entity : classStuds) {
+                                ClassStud classStud = (ClassStud) entity;
+                                print(classStud.toString());
+                            }
+                            break;
+                        default:
+                            print(tryAgain);
+                    }
+                    break;
+            }
+        } catch(SQLException e){
+            System.out.println(exceptionText);
         }
     }
 
-    private static void create(Scanner in, int chosenTable) {
+    private void create(Scanner in, int chosenTable) {
         print(createText);
         switch (chosenTable) {
             case 1:
-                print("id, email, fio, group_id \n");
-                Student st = new Student(in.nextInt(), in.nextLine(), in.nextLine(), in.nextInt());
-                DBRepo.insert(st);
+                print("email, fio, group_id \n");
+                String email = in.nextLine();
+                String fio = in.nextLine();
+                int groupId = in.nextInt();
+                Student student = new Student(0, email, fio, groupId);
+                dbRepo.insert(student);
                 break;
             case 2:
-                print("id, email, fio, number \n");
-                Teacher teacher = new Teacher(in.nextInt(), in.nextLine(), in.nextLine(), in.nextLine());
-                DBRepo.insert(teacher);
+                print("email, fio, number \n");
+
+                email = in.nextLine();
+                fio = in.nextLine();
+                String number = in.nextLine();
+                Teacher teacher = new Teacher(0, email, fio, number);
+                dbRepo.insert(teacher);
                 break;
             case 3:
-                print("id, subject, price, teacher_id");
-                Course course = new Course(in.nextInt(), in.nextLine(), in.nextInt(), in.nextInt());
-                DBRepo.insert(course);
+                print("subject, price, teacher_id");
+                String subject = in.nextLine();
+                int price = in.nextInt();
+                int teacher_id = in.nextInt();
+                Course course = new Course(0, subject, price, teacher_id);
+                dbRepo.insert(course);
                 break;
             case 4:
-                print("id, group_number, course_id");
-                GroupStud groupStud = new GroupStud(in.nextInt(), in.nextInt(), in.nextInt());
-                DBRepo.insert(groupStud);
+                print("group_number, course_id");
+                int group_number = in.nextInt();
+                int course_id = in.nextInt();
+                GroupStud groupStud = new GroupStud(0, group_number, course_id);
+                dbRepo.insert(groupStud);
                 break;
             case 5:
-                print("id, start_at, room_no, group_id, teacher_id");
-                ClassStud classStud = new ClassStud(in.nextInt(), in.nextLine(), in.nextInt(), in.nextInt(), in.nextInt());
-                DBRepo.insert(classStud);
+                print("start_at, room_no, group_id, teacher_id");
+                String start_at = in.nextLine();
+                int room_no = in.nextInt();
+                int group_id = in.nextInt();
+                teacher_id = in.nextInt();
+                ClassStud classStud = new ClassStud(0, start_at,room_no, group_id, teacher_id);
+                dbRepo.insert(classStud);
                 break;
         }
     }

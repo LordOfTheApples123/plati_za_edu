@@ -3,7 +3,7 @@ package com.example.edu_com_plati_za_edu.entity;
 import java.sql.ResultSet;
 import java.sql.Time;
 
-public class ClassStud implements MyEntity{
+public class ClassStud extends MyEntity{
     private int id;
     private String startAt;
     private int roomNo;
@@ -58,27 +58,10 @@ public class ClassStud implements MyEntity{
         this.teacherId = teacherId;
     }
 
-    public String getInsertQuery(){
-        return "Insert into teacher(start_at, room_no, group_id, teacher_id) VALUES('"+ startAt.toString() +"', " + roomNo + ", " + groupId + ", " + teacherId + ")";
-    }
 
 
-    public static ClassStud parseFromQuery(ResultSet rs) throws Exception{
-        return new ClassStud(rs.getInt("id"),
-                rs.getTime("start_at").toString(),
-                rs.getInt("room_no"),
-                rs.getInt("group_id"),
-                rs.getInt("teacher_id"));
-    }
 
-    @Override
-    public String getUpdateQuery() {
-        return "UPDATE class_stud SET start_at = '" + startAt +
-                "', room_no = " + roomNo +
-                ", group_id = " + groupId +
-                ", teacher_id = " + teacherId +
-                " WHERE id = " + id;
-    }
+
 
     @Override
     public String toString() {

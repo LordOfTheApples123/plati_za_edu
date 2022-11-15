@@ -3,7 +3,7 @@ package com.example.edu_com_plati_za_edu.entity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Teacher implements MyEntity{
+public class Teacher extends MyEntity{
     private int id;
     private String email;
     private String fio;
@@ -48,20 +48,10 @@ public class Teacher implements MyEntity{
         this.phoneNumber = phoneNumber;
     }
 
-    public String getInsertQuery(){
-        return "Insert into teacher(email, fio, phone_number) VALUES('"+ email +"', '" + fio + "', " + phoneNumber + ")";
-    }
 
 
 
 
-    @Override
-    public String getUpdateQuery() {
-        return "UPDATE teacher SET email = '" + email +
-                "', fio = '" + fio +
-                "', phone_number = " + phoneNumber +
-                " WHERE id = " + id;
-    }
 
     @Override
     public String toString(){
