@@ -37,8 +37,8 @@ public class QueryFabric {
         Class<?> manager = entityToManager.get(entityClass);
         try {
             Method insertMethod = manager.getMethod("getUpdateQuery", entityClass);
-            Object query = insertMethod.invoke(null, entity);
-            return (String) query;
+            String query = (String) insertMethod.invoke(null, entity);
+            return query.replace("<", " nice try ");
 
         } catch (Exception e) {
             System.err.println("рефлекты упали");
@@ -80,16 +80,19 @@ public class QueryFabric {
     }
 
     public String findByIdQuery(int id, Class<?> entityClass) throws SQLException {
-            return "SELECT * FROM " + classToSQLTableName(entityClass) +" WHERE id = " + id + ";";
+        String query = "SELECT * FROM " + classToSQLTableName(entityClass) + " WHERE id = " + id + ";";
+        return query.replace("<", "nice try");
 
     }
 
     public String getAllQuery(Class<?> entityClass) throws SQLException{
-        return "SELECT * FROM " + classToSQLTableName(entityClass) + ";";
+        String query = "SELECT * FROM " + classToSQLTableName(entityClass) + ";";
+        return query.replace("<", "nice try");
     }
 
     public String deleteByIdQuery(int id, Class<?> entityClass) throws SQLException {
-            return "DELETE FROM " + classToSQLTableName(entityClass) + " WHERE id = " + id + ";";
+        String query = "DELETE FROM " + classToSQLTableName(entityClass) + " WHERE id = " + id + ";";
+        return query.replace("<", "nice try ");
     }
 
     private static Boolean compareClasses(Class<?> a, Class<?> b){
