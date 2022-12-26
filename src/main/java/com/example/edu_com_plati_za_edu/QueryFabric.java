@@ -92,7 +92,7 @@ public class QueryFabric {
 
     public String deleteByIdQuery(int id, Class<?> entityClass) throws SQLException {
         String query = "DELETE FROM " + classToSQLTableName(entityClass) + " WHERE id = " + id + ";";
-        return query.replace("<", "nice try ");
+        return query.replace("<", " nice try ");
     }
 
     private static Boolean compareClasses(Class<?> a, Class<?> b){
