@@ -9,6 +9,12 @@ public class ConnectionMgr {
         String url = "jdbc:postgresql://localhost:5432/educational company plati-za-edu";
         String user = "postgres";
         String passwd = "root";
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            System.err.println("боль");
+            throw new RuntimeException(e);
+        }
         return DriverManager.getConnection(url, user, passwd);
     }
 

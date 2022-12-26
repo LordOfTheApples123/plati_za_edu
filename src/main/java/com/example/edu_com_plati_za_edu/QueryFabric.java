@@ -3,7 +3,6 @@ package com.example.edu_com_plati_za_edu;
 import com.example.edu_com_plati_za_edu.entity.*;
 import com.example.edu_com_plati_za_edu.entityManager.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import java.util.Map;
 
 public class QueryFabric {
     private static QueryFabric instance;
-    Map<Class<?>, Class<?>> entityToManager;
+    private Map<Class<?>, Class<?>> entityToManager;
 
     private QueryFabric() {
         initMap();
@@ -22,8 +21,9 @@ public class QueryFabric {
         Class<?> manager = entityToManager.get(entityClass);
         try {
             Method insertMethod = manager.getMethod("getInsertQuery", entityClass);
-            Object query = insertMethod.invoke(null, entity);
-            return (String) query;
+            String query = (String) insertMethod.invoke(null, entity);
+
+            return query.replace("<", " nice try ");
 
         } catch (Exception e) {
             System.err.println("рефлекты упали");
@@ -64,7 +64,7 @@ public class QueryFabric {
         return instance;
     }
 
-    public MyEntity parseFromQuery(Class<?> entityClass, ResultSet rs) throws SQLException {
+    public MyEntity parseFromQuery(Class<?> entityClass, ResultSet rs){
         Class<?> manager = entityToManager.get(entityClass);
         try {
             Method insertMethod = manager.getMethod("parseFromQuery", ResultSet.class);

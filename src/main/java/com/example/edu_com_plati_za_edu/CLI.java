@@ -2,10 +2,7 @@ package com.example.edu_com_plati_za_edu;
 
 import com.example.edu_com_plati_za_edu.entity.*;
 
-import javax.xml.crypto.dsig.dom.DOMValidateContext;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +12,6 @@ public class CLI {
     private static final String createText = "Enter element's attributes: \n";
     private static final String chooseRead = "Choose action: \n1 - find by id; \n2 - read whole table; \n";
     private static final String byIdText = "Enter id: \n";
-    private static final String ChooseUpdate = "Choose attr to update (0-4) \n";
     private static final String tryAgain = "invalid args. Try again \n";
     DBRepo dbRepo = new DBRepo();
     private static final String exceptionText = "Something went wrong. Try again";
@@ -83,7 +79,7 @@ public class CLI {
         }
     }
 
-    private static void update(Connection con, Scanner in, int chosenTable) {
+    private static void update(Scanner in, int chosenTable) {
 
     }
 
@@ -172,20 +168,32 @@ public class CLI {
         switch (chosenTable) {
             case 1:
                 print("email, fio, group_id \n");
+                in.nextLine();
                 String email = in.nextLine();
+
                 String fio = in.nextLine();
                 int groupId = in.nextInt();
                 Student student = new Student(0, email, fio, groupId);
-                dbRepo.insert(student);
+                try {
+                    dbRepo.insert(student);
+                } catch (SQLException e) {
+                    System.out.println("wrong args");
+                }
                 break;
             case 2:
                 print("email, fio, number \n");
 
                 email = in.nextLine();
+                in.nextLine();
                 fio = in.nextLine();
+                in.nextLine();
                 String number = in.nextLine();
                 Teacher teacher = new Teacher(0, email, fio, number);
-                dbRepo.insert(teacher);
+                try {
+                    dbRepo.insert(teacher);
+                } catch (SQLException e) {
+                    System.out.println("wrong args");
+                }
                 break;
             case 3:
                 print("subject, price, teacher_id");
@@ -193,14 +201,22 @@ public class CLI {
                 int price = in.nextInt();
                 int teacher_id = in.nextInt();
                 Course course = new Course(0, subject, price, teacher_id);
-                dbRepo.insert(course);
+                try {
+                    dbRepo.insert(course);
+                } catch (SQLException e) {
+                    System.out.println("wrong args");
+                }
                 break;
             case 4:
                 print("group_number, course_id");
                 int group_number = in.nextInt();
                 int course_id = in.nextInt();
                 GroupStud groupStud = new GroupStud(0, group_number, course_id);
-                dbRepo.insert(groupStud);
+                try {
+                    dbRepo.insert(groupStud);
+                } catch (SQLException e) {
+                    System.out.println("wrong args");
+                }
                 break;
             case 5:
                 print("start_at, room_no, group_id, teacher_id");
@@ -209,7 +225,11 @@ public class CLI {
                 int group_id = in.nextInt();
                 teacher_id = in.nextInt();
                 ClassStud classStud = new ClassStud(0, start_at,room_no, group_id, teacher_id);
-                dbRepo.insert(classStud);
+                try {
+                    dbRepo.insert(classStud);
+                } catch (SQLException e) {
+                    System.out.println("wrong args");
+                }
                 break;
         }
     }
