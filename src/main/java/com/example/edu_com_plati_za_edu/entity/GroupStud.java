@@ -6,6 +6,7 @@ public class GroupStud extends MyEntity{
     private int id;
     private int groupNumber;
     private int courseId;
+    private String subject;
 
     public GroupStud(int id, int groupNumber, int courseId) {
         this.id = id;
@@ -42,10 +43,20 @@ public class GroupStud extends MyEntity{
 
 
 
+
+
     @Override
     public String toString() {
         return "id = " + id +
                 ", groupNumber = " + groupNumber +
                 ", courseId = " + courseId;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

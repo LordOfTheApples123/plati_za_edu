@@ -194,19 +194,34 @@ public class DBRepo {
 //        return null;
 //    }
 //
-//    public List<Student> getGroupList(int groupNumber) {
-//        List<Student> result = new ArrayList<>();
-//        try {
-//            Statement st = con.createStatement();
-//            ResultSet rs = st.executeQuery("SELECT * FROM public.student WHERE group_id = " + groupNumber + ";");
-//            while (rs.next()) {
-//                result.add((Student) queryFabric.parseFromQuery(Student.class, rs));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
+    public List<Student> getGroupList(int groupId) {
+        List<Student> result = new ArrayList<>();
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM public.student WHERE group_id = " + groupId + ";");
+            while (rs.next()) {
+                result.add((Student) queryFabric.parseFromQuery(Student.class, rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public List<Student> findStudentsByFio(String fio){
+        List<Student> result = new ArrayList<>();
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM public.student WHERE fio = '" + fio + "';");
+            while (rs.next()) {
+                result.add((Student) queryFabric.parseFromQuery(Student.class, rs));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 //
 //    public Teacher getTeacherByCourseId(int req_id){
 //        try {

@@ -1,57 +1,31 @@
-<!DOCTYPE html>
+<%--
+  Created by IntelliJ IDEA.
+  User: apple
+  Date: 30.12.2022
+  Time: 08:03
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <title>Title</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<h1>My First Heading</h1>
-
-<form action="http://localhost:8080/plati_za_edu/student" method="get">
-    <div>
-        <input type = "Submit" value = "getAll">
-    </div>
+<form action="${pageContext.request.contextPath}/studentCR">
+    <input type="submit" value="student" />
 </form>
 
-<form action="http://localhost:8080/plati_za_edu/student" method="post">
-    <div class="form-example">
-        <label for="name">name: </label>
-        <input type="text" name="name" id="name" required>
-    </div>
-    <div class="form-example">
-        <label for="email">email: </label>
-        <input type="text" name="email" id="email" required>
-    </div>
-    <div class="form-example">
-        <label for="group_id">group id: </label>
-        <input type="number" name="group_id" id="group_id" required>
-    </div>
-    <div class="form-example">
-        <input type="submit" value="Submit!">
-    </div>
+<form action="${pageContext.request.contextPath}/courseForm">
+    <input type="submit" value="course" />
 </form>
 
-<form action="http://localhost:8080/plati_za_edu/student" method="get">
-
-    <div>
-        <label for="find_id">find by id: </label>
-        <input type="hidden" name="getById" value="true">
-        <input type="text" name="find_id" id="find_id" required>
-
-    </div>
-        <input type="submit" value="findById">
+<form action="${pageContext.request.contextPath}/groupForm">
+    <input type="submit" value="groups" />
 </form>
 
-<form action="http://localhost:8080/plati_za_edu/deleteStudentById" method="get">
-
-    <div>
-        <label for="delete_id">find by id: </label>
-        <input type="hidden" name="deleteById" value="true">
-        <input type="text" name="delete_id" id="delete_id" required>
-
-    </div>
-    <input type="submit" value="deleteById">
+<form action="${pageContext.request.contextPath}/teacherForm">
+    <input type="submit" value="teacher" />
 </form>
-
 </body>
 </html>

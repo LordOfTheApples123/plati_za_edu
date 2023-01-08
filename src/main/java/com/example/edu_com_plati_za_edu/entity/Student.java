@@ -52,11 +52,19 @@ public class Student extends MyEntity{
 
 
 
+//    @Override
+//    public String toString(){
+//        return "<td style=\"border: 1px solid black;\">" + id +
+//                "</td><td style=\"border: 1px solid black;\">" + email +
+//                "</td><td style=\"border: 1px solid black;\">" + fio +
+//                "</td><td style=\"border: 1px solid black;\">" + groupId + "</td>";
+//    }
+
     @Override
     public String toString(){
-        return "<td style=\"border: 1px solid black;\">" + id +
-                "</td><td style=\"border: 1px solid black;\">" + email +
-                "</td><td style=\"border: 1px solid black;\">" + fio +
-                "</td><td style=\"border: 1px solid black;\">" + groupId + "</td>";
+        return "<id = " + id +
+                "email = " + email +
+                "fio = " + fio +
+                "group_number" + groupId + "</td>";
     }
 }

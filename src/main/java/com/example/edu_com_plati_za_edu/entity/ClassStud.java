@@ -3,7 +3,7 @@ package com.example.edu_com_plati_za_edu.entity;
 import java.sql.ResultSet;
 import java.sql.Time;
 
-public class ClassStud extends MyEntity{
+public class ClassStud extends MyEntity {
     private int id;
     private String startAt;
     private int roomNo;
